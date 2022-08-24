@@ -8,7 +8,7 @@ export class Eventing {
     this.events[eventName] = handlers;
   };
 
-  triggger = (eventName: string): void => {
+  trigger = (eventName: string): void => {
     const handlers = this.events[eventName];
 
     if (!handlers || handlers.length === 0) {
