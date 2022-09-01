@@ -1,19 +1,51 @@
 export class UserForm {
   constructor(public parent: Element) {}
 
+  eventsMap(): { [key: string]: () => void } {
+    // this is an old approach. basically what developers do in the old day
+    return {
+      'click:button': this.onButtonClick,
+      'mouseenter:h1': this.onHeaderHover,
+    };
+  }
+
+  onHeaderHover(): void {
+    console.log('h1 is hovered');
+  }
+
+  onButtonClick(): void {
+    console.log('Hi there');
+  }
+
   template(): string {
     return `
       <div>
         <h1>User Form</h1>
         <input />
+        <button>Click me</button>
       </div>
     `;
+  }
+
+  bindEvents(fragment: DocumentFragment): void {
+    const eventsMap = this.eventsMap();
+    for (let eventKey in eventsMap) {
+      const [eventName, selector] = eventKey.split(':');
+
+      // provides array of element that matches the fragment (eg. button)
+      fragment.querySelectorAll(selector).forEach((element) => {
+        element.addEventListener(eventName, eventsMap[eventKey]);
+      });
+    }
   }
 
   render(): void {
     const templateElement = document.createElement('template');
     templateElement.innerHTML = this.template();
 
-    this.parent.append(templateElement.content);
+    const doumentFragment = templateElement.content;
+    this.bindEvents(doumentFragment);
+
+    this.parent.append(doumentFragment);
   }
 }
