@@ -1,7 +1,16 @@
 import { User } from '../models/User';
 
 export class UserForm {
-  constructor(public parent: Element, public model: User) {}
+  constructor(public parent: Element, public model: User) {
+    this.bindModel();
+  }
+
+  // renders view whenever you make a change
+  bindModel(): void {
+    this.model.on('change', () => {
+      this.render();
+    });
+  }
 
   eventsMap(): { [key: string]: () => void } {
     // this is an old approach. basically what developers do in the old day
@@ -10,9 +19,9 @@ export class UserForm {
     };
   }
 
-  onSetAge(): void {
-    console.log('Set age');
-  }
+  onSetAge = (): void => {
+    this.model.setRandomAge();
+  };
 
   template(): string {
     return `
@@ -38,7 +47,13 @@ export class UserForm {
     }
   }
 
+  clearView(): void {
+    this.parent.innerHTML = '';
+  }
+
   render(): void {
+    this.clearView();
+
     const templateElement = document.createElement('template');
     templateElement.innerHTML = this.template();
 
