@@ -4,9 +4,11 @@ export abstract class View<T extends Model<K>, K> {
   constructor(public parent: Element, public model: T) {
     this.bindModel();
   }
-
-  abstract eventsMap(): { [key: string]: () => void };
   abstract template(): string;
+
+  protected eventsMap(): { [key: string]: () => void } {
+    return {};
+  }
 
   // renders view whenever you make a change
   bindModel(): void {
