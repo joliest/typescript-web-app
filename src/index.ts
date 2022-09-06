@@ -1,5 +1,5 @@
 import { User } from './models/User';
-import { UserForm } from './views/UserForm';
+import { UserEdit } from './views/UserEdit';
 
 const user = User.buildUser({
   name: 'Joli',
@@ -8,8 +8,8 @@ const user = User.buildUser({
 
 const root = document.getElementById('root');
 if (root) {
-  const userForm = new UserForm(root, user);
-  userForm.render();
+  const userEdit = new UserEdit(root, user);
+  userEdit.render();
 } else {
   throw new Error('root is not found');
 }
